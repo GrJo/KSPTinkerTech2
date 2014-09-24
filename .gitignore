@@ -228,4 +228,4 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
-ReleasePackage/GameData/TinkerTech/TinkerTech.dll
+ReleasePackage/*
