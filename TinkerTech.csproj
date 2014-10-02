@@ -52,6 +52,7 @@
     <Compile Include="TTPartCountLaunchLimiter.cs" />
     <Compile Include="TTPreventInvalidScience.cs" />
     <Compile Include="TTPressureLimitedCockpit.cs" />
+    <Compile Include="TTSplashedSituationFix.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
