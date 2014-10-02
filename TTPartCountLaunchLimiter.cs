@@ -26,7 +26,7 @@ namespace TinkerTech
             {
                 m_bIsInstantiated = true;
                 m_bMainInstance = true;
-                windowRect = new Rect(Screen.width - 350, 50, 350, 100);
+                windowRect = new Rect(Screen.width - 350, 50, 280, 100);
                 GameEvents.onEditorShipModified.Add(new EventData<ShipConstruct>.OnEvent(OnEditorShipModified));
 
 
@@ -87,8 +87,12 @@ namespace TinkerTech
 
         private int maxPartCount()
         {
-            return 200; //TODO Tech-dependent return here
-            //if (ResearchAndDevelopment.GetTechnologyState("experimentalRocketry") == RDTech.State.Available)
+            int partsAllowed = 200;
+            if (ResearchAndDevelopment.GetTechnologyState("veryHeavyRocketry") == RDTech.State.Available)
+                partsAllowed += 25;
+
+            return partsAllowed;
+            
         }
 
         void OnDestroy()
