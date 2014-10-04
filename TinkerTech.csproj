@@ -48,6 +48,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProbeHibernationSwitch.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TTPartCountLaunchLimiter.cs" />
     <Compile Include="TTPreventInvalidScience.cs" />
@@ -59,7 +62,8 @@
     <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)\ReleasePackage\GameData\TinkerTech"
 
 copy "$(TargetPath)" "C:\Spiele\KSP 0.24.2 - Tinkertech\GameData\TinkerTech"
-</PostBuildEvent>
+
+copy "$(TargetPath)" "C:\Spiele\KSP 0.24.2 - ATCTest\GameData\ATC"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
