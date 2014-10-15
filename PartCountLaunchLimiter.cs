@@ -6,35 +6,25 @@ using UnityEngine;
 
 namespace TinkerTech
 {
-    [KSPAddon(KSPAddon.Startup.EditorAny, false)]
-    class TTPartCountLaunchLimiter : MonoBehaviour
+    [KSPAddon(KSPAddon.Startup.EditorAny, false)] //nonpersistent, restarted on each editor scene entry
+    class PartCountLaunchLimiter : MonoBehaviour
     {
-        static bool m_bIsInstantiated = false;
-
-        private bool m_bMainInstance = false;
-
-
         private bool lockLaunchButton = false;
 
-        
         private Rect windowRect  = new Rect();
         private string warningMsg = "";
 
+        GUIStyle labelStyle = new GUIStyle();
+
         void Start()
         {
-            if (!m_bIsInstantiated)
-            {
-                m_bIsInstantiated = true;
-                m_bMainInstance = true;
-                windowRect = new Rect(Screen.width - 350, 50, 280, 100);
-                GameEvents.onEditorShipModified.Add(new EventData<ShipConstruct>.OnEvent(OnEditorShipModified));
+            labelStyle = HighLogic.Skin.box;
+            labelStyle.normal.textColor = Color.red;
+            labelStyle.alignment = TextAnchor.MiddleCenter;
+            labelStyle.wordWrap = true;
 
-
-            }
-            else
-            {
-                Destroy(this);
-            }
+            windowRect = new Rect(Screen.width - 350, 50, 280, 100);
+            GameEvents.onEditorShipModified.Add(new EventData<ShipConstruct>.OnEvent(OnEditorShipModified));
         }
 
         private void OnEditorShipModified(ShipConstruct shipConstruct)
@@ -70,13 +60,7 @@ namespace TinkerTech
 
                 if (warningMsg.Length > 0)
                 {
-                    GUIStyle labelStyle = HighLogic.Skin.box;
-                    labelStyle.normal.textColor = Color.red;
-                    labelStyle.alignment = TextAnchor.MiddleCenter;
-                    labelStyle.wordWrap = true;
-
                     GUI.Label(windowRect, warningMsg, labelStyle);
-
                 }
             }
             else
@@ -97,17 +81,8 @@ namespace TinkerTech
 
         void OnDestroy()
         {
-            if (m_bMainInstance)
-            {
-                //GameEvents.onGameSceneLoadRequested.Remove(new EventData<GameScenes>.OnEvent(OnGameSceneLoadRequested));
-                GameEvents.onEditorShipModified.Remove(new EventData<ShipConstruct>.OnEvent(OnEditorShipModified));
-                
-                m_bIsInstantiated = false;
-            }
+            GameEvents.onEditorShipModified.Remove(new EventData<ShipConstruct>.OnEvent(OnEditorShipModified));               
         }
-
-
-
-
+        
     }
 }

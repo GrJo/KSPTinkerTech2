@@ -6,45 +6,19 @@ using UnityEngine;
 
 namespace TinkerTech
 {
-    [KSPAddon(KSPAddon.Startup.MainMenu, false)]
-    class TTPreventInvalidScience : MonoBehaviour
+    [KSPAddon(KSPAddon.Startup.MainMenu, true)]//persistent single-instance
+    class PreventInvalidScience : MonoBehaviour
     {
-
-        static bool bIsInstantiated = false;
-        static bool bRemoveEventsOnDestroy = true;
-
         void Start()
         {
-            if (!bIsInstantiated)
-            {
-                //public void Add(EventData<T, U>.OnEvent evt);
-                GameEvents.OnScienceRecieved.Add(OnScienceReceived);
-                DontDestroyOnLoad(this);
-
-                bIsInstantiated = true;
-            }
-            else
-            {
-                bRemoveEventsOnDestroy = false;
-
-                Destroy(this);
-            }
+            //public void Add(EventData<T, U>.OnEvent evt);
+            GameEvents.OnScienceRecieved.Add(OnScienceReceived);
+            DontDestroyOnLoad(this);
         }
 
         void OnDestroy()
         {
-            //print( "TinkerTechMonoBehaviorTechTreeMod: OnDestroy" );
-            if (bRemoveEventsOnDestroy)
-            {
-                GameEvents.OnScienceRecieved.Remove(OnScienceReceived);
-            }
-
-            bRemoveEventsOnDestroy = true;
-        }
-
-        public void Update()
-        {
-
+            GameEvents.OnScienceRecieved.Remove(OnScienceReceived);
         }
 
         void OnScienceReceived(float value, ScienceSubject scienceSubject)
@@ -54,7 +28,7 @@ namespace TinkerTech
                 {
                     Debug.Log("TinkerTech: received invalid science result:" + scienceSubject.title + "(" + value.ToString() + ") - removing " + value.ToString() + " from the pool");
 
-                    ResearchAndDevelopment.Instance.Science -= value;
+                    ResearchAndDevelopment.Instance.AddScience(-value, TransactionReasons.Cheating);
                 }
             }
         }

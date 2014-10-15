@@ -6,40 +6,19 @@ using UnityEngine;
 
 namespace TinkerTech
 {
-    [KSPAddon(KSPAddon.Startup.Flight, false)]
-    class TTSplashedSituationFix :  MonoBehaviour
+    [KSPAddon(KSPAddon.Startup.Flight, true)]
+    class SplashedSituationFix :  MonoBehaviour
     {
-        static bool bIsInstantiated = false;
-        static bool bRemoveEventsOnDestroy = true;
 
         void Start()
         {
-            if (!bIsInstantiated)
-            {
-                //public void Add(EventData<T, U>.OnEvent evt);
-                GameEvents.onVesselSituationChange.Add(new EventData<GameEvents.HostedFromToAction<Vessel, Vessel.Situations>>.OnEvent(OnVesselSituationChanged));
-
-                DontDestroyOnLoad(this);
-
-                bIsInstantiated = true;
-            }
-            else
-            {
-                bRemoveEventsOnDestroy = false;
-
-                Destroy(this);
-            }
+            GameEvents.onVesselSituationChange.Add(new EventData<GameEvents.HostedFromToAction<Vessel, Vessel.Situations>>.OnEvent(OnVesselSituationChanged));
+            DontDestroyOnLoad(this);
         }
 
         void OnDestroy()
         {
-            //print( "TinkerTechMonoBehaviorTechTreeMod: OnDestroy" );
-            if (bRemoveEventsOnDestroy)
-            {
-                GameEvents.onVesselSituationChange.Remove(OnVesselSituationChanged);
-            }
-
-            bRemoveEventsOnDestroy = true;
+            GameEvents.onVesselSituationChange.Remove(OnVesselSituationChanged);
         }
 
         private void OnVesselSituationChanged(GameEvents.HostedFromToAction<Vessel, Vessel.Situations> data)
@@ -61,7 +40,5 @@ namespace TinkerTech
 
             }//endif
         }//end onsituation
-
-
     }//end behaviour
 }
